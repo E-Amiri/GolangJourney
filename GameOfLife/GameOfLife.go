@@ -9,20 +9,20 @@ import (
 var (
 	width  = 20
 	height = 20
+	//s      = make([][]string, width, height)
 )
 
 func field() {
-	s := make([][]string, width, height)
-	for i := 0; i < width; i++ {
-		for j := 0; j < height; j++ {
-			fmt.Println(s)
-		}
+	s := make([][]bool, width)
+	for i := range s {
+		s[i] = make([]bool, height)
 	}
 	fmt.Println(s)
 }
-func initialGen() {
 
-}
+/*func initialGen() {
+	s =
+}*/
 
 func main() {
 	fmt.Println("The Width of your canvas is ", width)
