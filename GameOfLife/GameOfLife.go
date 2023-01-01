@@ -6,16 +6,15 @@ import (
 	//"time"
 )
 
-var (
-	width  = 20
-	height = 20
-	//s      = make([][]string, width, height)
-)
+type Field struct {
+	h int
+	w int
+}
 
-func field() {
-	s := make([][]bool, width)
+func (field Field) makeField() {
+	s := make([][]bool, field.h)
 	for i := range s {
-		s[i] = make([]bool, height)
+		s[i] = make([]bool, field.w)
 	}
 	fmt.Println(s)
 }
@@ -25,10 +24,6 @@ func field() {
 }*/
 
 func main() {
-	fmt.Println("The Width of your canvas is ", width)
-	//fmt.Scanln(&width)
-	fmt.Println("The Height of your canvas is ", height)
-	//fmt.Scanln(&height)
-
-	field()
+	myfield := Field{h: 20, w: 20}
+	myfield.makeField()
 }
