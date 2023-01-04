@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	//"math/rand"
 )
 
 type Field struct {
 	height int
 	width  int
+	//mainSlice [][]bool
 }
 
 func (field Field) drawField() {
@@ -18,7 +18,16 @@ func (field Field) drawField() {
 	fmt.Println(s)
 }
 
+/*
+	func (field Field) setValue() bool{
+		rand.Seed(time.Now().UnixNano())
+		if rand.Int()
+
+}
+*/
 func main() {
 	field := Field{20, 10}
 	Field.drawField(field)
+	//field = Field{20, 30}
+	//Field.drawField(field)
 }
