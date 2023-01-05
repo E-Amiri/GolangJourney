@@ -7,7 +7,6 @@ import (
 type Field struct {
 	height int
 	width  int
-	//mainSlice [][]bool
 }
 
 func (field Field) drawField() {
@@ -25,18 +24,7 @@ func (field Field) drawField() {
 	}
 	fmt.Println(s)
 }
-
-/*
-	func (field Field) setValue(x, y int, b bool) [][]bool {
-		field.mainSlice[x][y] = b
-		return field.mainSlice
-	}
-*/
 func main() {
-	//var f Field
-	//var s [][]bool = Field.setValue(f, 20, 10, true)
 	field := Field{20, 10}
 	Field.drawField(field)
-	//field = Field{20, 30}
-	//Field.drawField(field)
 }
