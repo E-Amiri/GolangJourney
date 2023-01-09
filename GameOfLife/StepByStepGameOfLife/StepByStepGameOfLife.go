@@ -7,8 +7,8 @@ import (
 func main() {
 	var t []string
 	var f []string
-	height := 0
-	width := 0
+	height := 20
+	width := 20
 
 	fmt.Println("Please Enter the Height of Your Grid:")
 	fmt.Scan(&height)
