@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
+	"os/exec"
 	"time"
 )
 
@@ -39,5 +41,8 @@ func main() {
 		fmt.Println("\nTotal Alive cells =", len(t))
 		fmt.Println("Total Dead cells =", len(f))
 		time.Sleep(1 * time.Second)
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
 	}
 }
