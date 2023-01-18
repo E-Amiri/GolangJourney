@@ -3,9 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-
-	//"os"
-	//"os/exec"
 	"time"
 )
 
@@ -34,35 +31,41 @@ func main() {
 			}
 		}
 	}
+	fmt.Println("\n_______________________")
+
 	for {
-		fmt.Println("\n_______________________")
-		alive := 0
-		thisAlive := 0
-		for i := 1; i < height; i++ {
+		for i := 0; i < height; i++ {
 			fmt.Println("\n")
-			for j := 1; j < width; j++ {
-				for di := i - 1; di <= i; di++ {
-					for dj := j - 1; dj <= j; dj++ {
-						if s[di][dj] == "*" && di != i && dj != j {
+			for j := 0; j < width; j++ {
+				alive := 0
+				thisAlive := 0
+
+				for di := i - 1; di <= i+1; di++ {
+					if di < 0 || di >= width {
+						continue
+					}
+					for dj := j - 1; dj <= j+1; dj++ {
+						if dj < 0 || dj >= width {
+							continue
+						} else if s[di][dj] == "*" && di != i && dj != j {
 							alive++
 						} else if di != i && dj != j {
 							thisAlive = 1
 						}
 					}
 				}
-				if alive < 4 && alive > 1 && thisAlive == 1 || alive == 3 && thisAlive != 1 {
+				if thisAlive == 1 && alive == 2 {
 					s[i][j] = "*"
 					fmt.Printf("%v ", s[i][j])
+				} else if thisAlive >= 0 && alive == 3 {
+					s[i][j] = "*"
 				} else {
 					s[i][j] = "-"
 					fmt.Printf("%v ", s[i][j])
 				}
 			}
 		}
-		/*	time.Sleep(1 * time.Second)
-			cmd := exec.Command("clear")
-			cmd.Stdout = os.Stdout
-			cmd.Run()*/
+		time.Sleep(1 * time.Second)
+		fmt.Println("\n________________________")
 	}
-
 }
