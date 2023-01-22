@@ -24,10 +24,10 @@ func main() {
 		for j := 0; j < width; j++ {
 			if rand.Intn(10)%2 == 0 {
 				s[i][j] = "*"
-				fmt.Printf("%v ", s[i][j])
+				fmt.Printf("%v", s[i][j])
 			} else {
 				s[i][j] = "-"
-				fmt.Printf("%v ", s[i][j])
+				fmt.Printf("%v", s[i][j])
 			}
 		}
 	}
@@ -39,7 +39,6 @@ func main() {
 			for j := 0; j < width; j++ {
 				alive := 0
 				thisAlive := 0
-
 				for di := i - 1; di < i+2; di++ {
 					if di < 0 || di >= height {
 						continue
@@ -56,21 +55,22 @@ func main() {
 								//fmt.Printf("#")
 							}
 						}
-						//fmt.Printf("{%v}", di)
-						//fmt.Printf("[%v]", dj)
+						//fmt.Printf("{%v}", i)
+						//fmt.Printf("[%v]", j)
 					}
 				}
-				fmt.Printf("%v", alive)
-				fmt.Printf("%v", thisAlive)
+				//fmt.Printf("%v", alive)
+				//fmt.Printf("%v", thisAlive)
+
 				if thisAlive == 1 && 1 < alive && alive < 4 {
 					s[i][j] = "*"
-					fmt.Printf("%v ", s[i][j])
+					fmt.Printf("%v", s[i][j])
 				} else if thisAlive == 0 && alive == 3 {
 					s[i][j] = "*"
-					fmt.Printf("%v ", s[i][j])
+					fmt.Printf("%v", s[i][j])
 				} else {
 					s[i][j] = "-"
-					fmt.Printf("%v ", s[i][j])
+					fmt.Printf("%v", s[i][j])
 				}
 			}
 		}
