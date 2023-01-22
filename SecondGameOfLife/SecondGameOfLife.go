@@ -40,25 +40,34 @@ func main() {
 				alive := 0
 				thisAlive := 0
 
-				for di := i - 1; di <= i+1; di++ {
-					if di < 0 || di >= width {
+				for di := i - 1; di < i+2; di++ {
+					if di < 0 || di >= height {
 						continue
 					}
-					for dj := j - 1; dj <= j+1; dj++ {
+					for dj := j - 1; dj < j+2; dj++ {
 						if dj < 0 || dj >= width {
 							continue
-						} else if s[di][dj] == "*" && di != i && dj != j {
-							alive++
-						} else if di != i && dj != j {
-							thisAlive = 1
+						} else if s[di][dj] == "*" {
+							if di == i && dj == j {
+								thisAlive++
+								//fmt.Printf("$")
+							} else {
+								alive++
+								//fmt.Printf("#")
+							}
 						}
+						//fmt.Printf("{%v}", di)
+						//fmt.Printf("[%v]", dj)
 					}
 				}
-				if thisAlive == 1 && alive == 2 {
+				fmt.Printf("%v", alive)
+				fmt.Printf("%v", thisAlive)
+				if thisAlive == 1 && 1 < alive && alive < 4 {
 					s[i][j] = "*"
 					fmt.Printf("%v ", s[i][j])
-				} else if thisAlive >= 0 && alive == 3 {
+				} else if thisAlive == 0 && alive == 3 {
 					s[i][j] = "*"
+					fmt.Printf("%v ", s[i][j])
 				} else {
 					s[i][j] = "-"
 					fmt.Printf("%v ", s[i][j])
