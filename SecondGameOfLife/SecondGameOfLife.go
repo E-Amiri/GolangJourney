@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
+	"os/exec"
 	"time"
 )
 
@@ -18,23 +20,34 @@ func main() {
 	s := make([][]string, height)
 	rand.Seed(time.Now().UnixNano())
 
+	var Alive []string
+	var Dead []string
+
 	for i := 0; i < height; i++ {
 		s[i] = make([]string, width)
 		fmt.Println("\n")
 		for j := 0; j < width; j++ {
 			if rand.Intn(10)%2 == 0 {
 				s[i][j] = "*"
-				fmt.Printf("%v", s[i][j])
+				Alive = append(Alive, "*")
+				fmt.Printf("%v ", s[i][j])
 			} else {
 				s[i][j] = "-"
-				fmt.Printf("%v", s[i][j])
+				Dead = append(Dead, "-")
+				fmt.Printf("%v ", s[i][j])
 			}
 		}
 	}
+	fmt.Println("Total Alive Cells = ", len(Alive))
+	fmt.Println("Total Dead Cells = ", len(Dead))
 	fmt.Println("\n_______________________")
 
 	for {
+		var totalAlive []string
+		var totalDead []string
+		nextGen := make([][]string, height)
 		for i := 0; i < height; i++ {
+			nextGen[i] = make([]string, width)
 			fmt.Println("\n")
 			for j := 0; j < width; j++ {
 				alive := 0
@@ -49,32 +62,35 @@ func main() {
 						} else if s[di][dj] == "*" {
 							if di == i && dj == j {
 								thisAlive++
-								//fmt.Printf("$")
 							} else {
 								alive++
-								//fmt.Printf("#")
 							}
 						}
-						//fmt.Printf("{%v}", i)
-						//fmt.Printf("[%v]", j)
+
 					}
 				}
-				//fmt.Printf("%v", alive)
-				//fmt.Printf("%v", thisAlive)
-
 				if thisAlive == 1 && 1 < alive && alive < 4 {
-					s[i][j] = "*"
-					fmt.Printf("%v", s[i][j])
+					nextGen[i][j] = "*"
+					totalAlive = append(totalAlive, "*")
+					fmt.Printf("%v ", nextGen[i][j])
 				} else if thisAlive == 0 && alive == 3 {
-					s[i][j] = "*"
-					fmt.Printf("%v", s[i][j])
+					nextGen[i][j] = "*"
+					totalAlive = append(totalAlive, "*")
+					fmt.Printf("%v ", nextGen[i][j])
 				} else {
-					s[i][j] = "-"
-					fmt.Printf("%v", s[i][j])
+					nextGen[i][j] = "-"
+					totalDead = append(totalDead, "-")
+					fmt.Printf("%v ", nextGen[i][j])
 				}
 			}
 		}
+		s = nextGen
 		time.Sleep(1 * time.Second)
-		fmt.Println("\n________________________")
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+
+		fmt.Println("Total Alive Cells = ", len(totalAlive))
+		fmt.Println("Total Dead Cells = ", len(totalDead))
 	}
 }
