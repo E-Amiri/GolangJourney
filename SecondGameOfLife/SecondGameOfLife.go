@@ -8,25 +8,23 @@ import (
 	"time"
 )
 
-func main() {
-	height := 0
-	width := 0
+type Grid struct {
+	height, width int
+}
 
-	fmt.Println("Enter the Height of Your Grid, Please ")
-	fmt.Scanln(&height)
-	fmt.Println("Enter the Width of Your Grid, Please ")
-	fmt.Scanln(&width)
+var s [][]string
 
-	s := make([][]string, height)
+func (myGrid *Grid) drawGrid() [][]string {
+	s := make([][]string, myGrid.height)
 	rand.Seed(time.Now().UnixNano())
 
 	var Alive []string
 	var Dead []string
 
-	for i := 0; i < height; i++ {
-		s[i] = make([]string, width)
+	for i := 0; i < myGrid.height; i++ {
+		s[i] = make([]string, myGrid.width)
 		fmt.Println("\n")
-		for j := 0; j < width; j++ {
+		for j := 0; j < myGrid.width; j++ {
 			if rand.Intn(10)%2 == 0 {
 				s[i][j] = "*"
 				Alive = append(Alive, "*")
@@ -38,26 +36,28 @@ func main() {
 			}
 		}
 	}
+	fmt.Println("\n")
 	fmt.Println("Total Alive Cells = ", len(Alive))
 	fmt.Println("Total Dead Cells = ", len(Dead))
 	fmt.Println("\n_______________________")
-
 	for {
 		var totalAlive []string
 		var totalDead []string
-		nextGen := make([][]string, height)
-		for i := 0; i < height; i++ {
-			nextGen[i] = make([]string, width)
+
+		nextGen := make([][]string, myGrid.height)
+
+		for i := 0; i < myGrid.height; i++ {
+			nextGen[i] = make([]string, myGrid.width)
 			fmt.Println("\n")
-			for j := 0; j < width; j++ {
+			for j := 0; j < myGrid.width; j++ {
 				alive := 0
 				thisAlive := 0
 				for di := i - 1; di < i+2; di++ {
-					if di < 0 || di >= height {
+					if di < 0 || di >= myGrid.height {
 						continue
 					}
 					for dj := j - 1; dj < j+2; dj++ {
-						if dj < 0 || dj >= width {
+						if dj < 0 || dj >= myGrid.width {
 							continue
 						} else if s[di][dj] == "*" {
 							if di == i && dj == j {
@@ -93,4 +93,15 @@ func main() {
 		fmt.Println("Total Alive Cells = ", len(totalAlive))
 		fmt.Println("Total Dead Cells = ", len(totalDead))
 	}
+
+}
+func main() {
+	var h, w int
+	fmt.Println("Enter the Height of Your Grid, Please ")
+	fmt.Scanln(&h)
+	fmt.Println("Enter the Width of Your Grid, Please ")
+	fmt.Scanln(&w)
+
+	myGrid := Grid{h, w}
+	myGrid.drawGrid()
 }
