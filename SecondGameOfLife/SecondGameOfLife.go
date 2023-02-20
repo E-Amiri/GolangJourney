@@ -43,10 +43,10 @@ func nextGrid(s [][]string) [][]string {
 
 	height := len(s)
 
-	for i := 0; i < height; i++ {
+	for i := 0; i < height+1; i++ {
 		width := len(s[i])
 		fmt.Print("\n")
-		for j := 0; j < width; j++ {
+		for j := 0; j < width+1; j++ {
 			alive := 0
 			thisAlive := 0
 			for di := i - 1; di < i+2; di++ {
