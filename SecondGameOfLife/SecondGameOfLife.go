@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
+	"os/exec"
 	"time"
 )
 
@@ -16,7 +18,6 @@ func (myGrid *Grid) makeGrid() [][]string {
 	s := make([][]string, myGrid.height)
 	for i := 0; i < myGrid.height; i++ {
 		s[i] = make([]string, myGrid.width)
-		fmt.Println("\n")
 		for j := 0; j < myGrid.width; j++ {
 			if rand.Intn(10)%2 == 0 {
 				s[i][j] = "*"
@@ -42,11 +43,12 @@ func nextGrid(s [][]string) [][]string {
 	var totalDead []string
 
 	height := len(s)
-
-	for i := 0; i < height+1; i++ {
+	nextGen := make([][]string, height)
+	for i := 0; i < height; i++ {
 		width := len(s[i])
-		fmt.Print("\n")
-		for j := 0; j < width+1; j++ {
+		//fmt.Print("\n")
+		nextGen[i] = make([]string, width)
+		for j := 0; j < width; j++ {
 			alive := 0
 			thisAlive := 0
 			for di := i - 1; di < i+2; di++ {
@@ -66,20 +68,18 @@ func nextGrid(s [][]string) [][]string {
 				}
 			}
 			if thisAlive == 1 && 1 < alive && alive < 4 {
-				s[i][j] = "*"
+				nextGen[i][j] = "*"
 				totalAlive = append(totalAlive, "*")
 			} else if thisAlive == 0 && alive == 3 {
-				s[i][j] = "*"
+				nextGen[i][j] = "*"
 				totalAlive = append(totalAlive, "*")
 			} else {
-				s[i][j] = "-"
+				nextGen[i][j] = "-"
 				totalDead = append(totalDead, "-")
 			}
-			fmt.Printf("%v", thisAlive)
-			fmt.Printf("%v ", alive)
 		}
 	}
-	s = s
+	s = nextGen
 
 	fmt.Println("Total Alive Cells = ", len(totalAlive))
 	fmt.Println("Total Dead Cells = ", len(totalDead))
@@ -100,8 +100,8 @@ func main() {
 		printGrid(s)
 
 		time.Sleep(1 * time.Second)
-		//cmd := exec.Command("clear")
-		//cmd.Stdout = os.Stdout
-		//cmd.Run()
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
 	}
 }
