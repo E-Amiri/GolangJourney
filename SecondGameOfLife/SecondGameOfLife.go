@@ -8,49 +8,49 @@ import (
 	"time"
 )
 
-type Grid struct {
+type Ground struct {
 	height, width int
 }
 
-func (myGrid *Grid) makeGrid() [][]string {
+func (myGround *Ground) initializeGround() [][]string {
 	rand.Seed(time.Now().UnixNano())
 
-	s := make([][]string, myGrid.height)
-	for i := 0; i < myGrid.height; i++ {
-		s[i] = make([]string, myGrid.width)
-		for j := 0; j < myGrid.width; j++ {
+	ground := make([][]string, myGround.height)
+	for i := 0; i < myGround.height; i++ {
+		ground[i] = make([]string, myGround.width)
+		for j := 0; j < myGround.width; j++ {
 			if rand.Intn(10)%2 == 0 {
-				s[i][j] = "*"
+				ground[i][j] = "*"
 			} else {
-				s[i][j] = "-"
+				ground[i][j] = "-"
 			}
 		}
 	}
-	return s
+	return ground
 }
 
-func printGrid(s [][]string) {
-	for i := 0; i < len(s); i++ {
+func printGround(ground [][]string) {
+	for i := 0; i < len(ground); i++ {
 		fmt.Println("\n")
-		for j := 0; j < len(s[i]); j++ {
-			fmt.Printf("%v ", s[i][j])
+		for j := 0; j < len(ground[i]); j++ {
+			fmt.Printf("%v ", ground[i][j])
 		}
 	}
 }
-func nextGrid(s [][]string) [][]string {
+func generateNextGround(ground [][]string) [][]string { // too long
 	fmt.Println("\n_______________________")
 	var totalAlive []string
 	var totalDead []string
 
-	height := len(s)
-	nextGen := make([][]string, height)
+	height := len(ground)
+	nextGenGround := make([][]string, height)
 	for i := 0; i < height; i++ {
-		width := len(s[i])
+		width := len(ground[i])
 		//fmt.Print("\n")
-		nextGen[i] = make([]string, width)
+		nextGenGround[i] = make([]string, width)
 		for j := 0; j < width; j++ {
-			alive := 0
-			thisAlive := 0
+			aliveNeighbours := 0
+			isAlive := 0
 			for di := i - 1; di < i+2; di++ {
 				if di < 0 || di >= height {
 					continue
@@ -58,46 +58,46 @@ func nextGrid(s [][]string) [][]string {
 				for dj := j - 1; dj < j+2; dj++ {
 					if dj < 0 || dj >= width {
 						continue
-					} else if s[di][dj] == "*" {
+					} else if ground[di][dj] == "*" {
 						if di == i && dj == j {
-							thisAlive++
+							isAlive++
 						} else {
-							alive++
+							aliveNeighbours++
 						}
 					}
 				}
 			}
-			if thisAlive == 1 && 1 < alive && alive < 4 {
-				nextGen[i][j] = "*"
+			if isAlive == 1 && 1 < aliveNeighbours && aliveNeighbours < 4 {
+				nextGenGround[i][j] = "*"
 				totalAlive = append(totalAlive, "*")
-			} else if thisAlive == 0 && alive == 3 {
-				nextGen[i][j] = "*"
+			} else if isAlive == 0 && aliveNeighbours == 3 {
+				nextGenGround[i][j] = "*"
 				totalAlive = append(totalAlive, "*")
 			} else {
-				nextGen[i][j] = "-"
+				nextGenGround[i][j] = "-"
 				totalDead = append(totalDead, "-")
 			}
 		}
 	}
-	s = nextGen
+	ground = nextGenGround
 
 	fmt.Println("Total Alive Cells = ", len(totalAlive))
 	fmt.Println("Total Dead Cells = ", len(totalDead))
-	return s
+	return ground
 }
 func main() {
-	var h, w int
+	var height, width int
 	fmt.Println("Enter the Height of Your Grid, Please ")
-	fmt.Scanln(&h)
+	fmt.Scanln(&height)
 	fmt.Println("Enter the Width of Your Grid, Please ")
-	fmt.Scanln(&w)
+	fmt.Scanln(&width)
 
-	myGrid := Grid{h, w}
-	s := myGrid.makeGrid()
-	printGrid(s)
+	myGrid := Ground{height, width}
+	ground := myGrid.initializeGround()
+	printGround(ground)
 	for {
-		s = nextGrid(s)
-		printGrid(s)
+		ground = generateNextGround(ground)
+		printGround(ground)
 
 		time.Sleep(1 * time.Second)
 		cmd := exec.Command("clear")
