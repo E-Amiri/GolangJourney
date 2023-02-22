@@ -30,60 +30,90 @@ func (myGround *Ground) initializeGround() [][]string {
 }
 
 func printGround(ground [][]string) {
+	fmt.Print("\n_______________________")
 	for i := 0; i < len(ground); i++ {
-		fmt.Println("\n")
+		fmt.Print("\n")
 		for j := 0; j < len(ground[i]); j++ {
 			fmt.Printf("%v ", ground[i][j])
 		}
 	}
 }
-func generateNextGround(ground [][]string) [][]string { // too long
-	fmt.Println("\n_______________________")
-	var totalAlive []string
-	var totalDead []string
 
+func generateNextGround(ground [][]string) [][]string {
 	height := len(ground)
 	nextGenGround := make([][]string, height)
 	for i := 0; i < height; i++ {
 		width := len(ground[i])
-		//fmt.Print("\n")
 		nextGenGround[i] = make([]string, width)
 		for j := 0; j < width; j++ {
-			aliveNeighbours := 0
-			isAlive := 0
-			for di := i - 1; di < i+2; di++ {
-				if di < 0 || di >= height {
-					continue
-				}
-				for dj := j - 1; dj < j+2; dj++ {
-					if dj < 0 || dj >= width {
-						continue
-					} else if ground[di][dj] == "*" {
-						if di == i && dj == j {
-							isAlive++
-						} else {
-							aliveNeighbours++
-						}
-					}
-				}
-			}
-			if isAlive == 1 && 1 < aliveNeighbours && aliveNeighbours < 4 {
-				nextGenGround[i][j] = "*"
-				totalAlive = append(totalAlive, "*")
-			} else if isAlive == 0 && aliveNeighbours == 3 {
-				nextGenGround[i][j] = "*"
-				totalAlive = append(totalAlive, "*")
-			} else {
-				nextGenGround[i][j] = "-"
-				totalDead = append(totalDead, "-")
-			}
+			//(ground[i][j])
+			nextGenGround[i][j] = willBeAlive(calculateAliveNeighbours(ground, i, j))
 		}
 	}
 	ground = nextGenGround
-
-	fmt.Println("Total Alive Cells = ", len(totalAlive))
-	fmt.Println("Total Dead Cells = ", len(totalDead))
 	return ground
+}
+
+func calculateAliveNeighbours(ground [][]string, i, j int) (int, int) {
+	aliveNeighbours := 0
+	isAlive := 0
+
+	for di := i - 1; di < i+2; di++ {
+		if di < 0 || di >= len(ground) {
+			continue
+		}
+		for dj := j - 1; dj < j+2; dj++ {
+			if dj < 0 || dj >= len(ground[i]) {
+				continue
+			} else if ground[di][dj] == "*" {
+				if di == i && dj == j {
+					isAlive++
+				} else {
+					aliveNeighbours++
+				}
+			}
+
+		}
+	}
+	return isAlive, aliveNeighbours
+}
+
+func willBeAlive(isAlive, aliveNeighbours int) (nextGenGround string) {
+	if isAlive == 1 && 1 < aliveNeighbours && aliveNeighbours < 4 {
+		nextGenGround = "*"
+	} else if isAlive == 0 && aliveNeighbours == 3 {
+		nextGenGround = "*"
+	} else {
+		nextGenGround = "-"
+	}
+	return nextGenGround
+}
+
+/*func calculateTotalStats(ground string) (int, int) {
+	var totalAlive []string
+	var totalDead []string
+
+	if ground == "*" {
+		totalAlive = append(totalAlive, "*")
+	} else {
+		totalDead = append(totalDead, "-")
+	}
+	return len(totalAlive), len(totalDead)
+}*/
+
+/*func printStats(totalAlive, totalDead int) {
+	fmt.Println("Total Alive Cells = ", (totalAlive))
+	fmt.Println("Total Dead Cells = ", (totalDead))
+}*/
+
+func delayBetweenGenerations(mytime int) {
+	time.Sleep(time.Duration(mytime) * time.Second)
+}
+
+func clearScreen() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
 func main() {
 	var height, width int
@@ -95,13 +125,13 @@ func main() {
 	myGrid := Ground{height, width}
 	ground := myGrid.initializeGround()
 	printGround(ground)
+
 	for {
 		ground = generateNextGround(ground)
 		printGround(ground)
-
-		time.Sleep(1 * time.Second)
-		cmd := exec.Command("clear")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
+		//calculateTotalStats()
+		//printStats(s)
+		delayBetweenGenerations(1)
+		clearScreen()
 	}
 }
