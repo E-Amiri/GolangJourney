@@ -13,8 +13,6 @@ type Ground struct {
 }
 
 func (myGround *Ground) InitializeGround() [][]string {
-	rand.Seed(time.Now().UnixNano())
-
 	ground := make([][]string, myGround.height)
 	for i := 0; i < myGround.height; i++ {
 		ground[i] = make([]string, myGround.width)

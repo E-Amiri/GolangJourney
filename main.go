@@ -1,9 +1,8 @@
 package main
 
 import (
+	"GolangJourney/GameOfLife"
 	"fmt"
-
-	"GameOfLife/GameOfLife"
 )
 
 func main() {
