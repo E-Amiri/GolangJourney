@@ -20,6 +20,6 @@ func main() {
 		ground = GameOfLife.GenerateNextGround(ground)
 		GameOfLife.PrintGround(ground)
 		GameOfLife.DelayBetweenGenerations(1)
-		//GameOfLife.ClearScreen()
+		GameOfLife.ClearScreen()
 	}
 }
