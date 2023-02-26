@@ -13,13 +13,13 @@ func main() {
 	fmt.Scanln(&width)
 
 	myGrid := GameOfLife.Ground{height, width}
-	ground := myGrid.initializeGround()
-	GameOfLife.printGround(ground)
+	ground := myGrid.InitializeGround()
+	GameOfLife.PrintGround(ground)
 
 	for {
 		ground = GameOfLife.GenerateNextGround(ground)
 		GameOfLife.PrintGround(ground)
 		GameOfLife.DelayBetweenGenerations(1)
-		GameOfLife.ClearScreen()
+		//GameOfLife.ClearScreen()
 	}
 }

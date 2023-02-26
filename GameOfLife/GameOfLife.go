@@ -9,14 +9,14 @@ import (
 )
 
 type Ground struct {
-	height, width int
+	Height, Width int
 }
 
 func (myGround *Ground) InitializeGround() [][]string {
-	ground := make([][]string, myGround.height)
-	for i := 0; i < myGround.height; i++ {
-		ground[i] = make([]string, myGround.width)
-		for j := 0; j < myGround.width; j++ {
+	ground := make([][]string, myGround.Height)
+	for i := 0; i < myGround.Height; i++ {
+		ground[i] = make([]string, myGround.Width)
+		for j := 0; j < myGround.Width; j++ {
 			if rand.Intn(10)%2 == 0 {
 				ground[i][j] = "*"
 			} else {
@@ -41,19 +41,19 @@ func GenerateNextGround(ground [][]string) [][]string {
 	height := len(ground)
 	nextGenGround := make([][]string, height)
 
-	var totalAlive []string
-	var totalDead []string
-
-	printStats(totalAlive, totalDead)
+	var totalAlive int
+	var totalDead int
 
 	for i := 0; i < height; i++ {
 		width := len(ground[i])
 		nextGenGround[i] = make([]string, width)
 		for j := 0; j < width; j++ {
-			calculateTotalStats(ground[i][j])
+			totalAlive, totalDead = calculateTotalStats(ground, height, width)
 			nextGenGround[i][j] = willBeAlive(CalculateAliveNeighbours(ground, i, j))
 		}
 	}
+	printStats(totalAlive, totalDead)
+
 	ground = nextGenGround
 	return ground
 }
@@ -93,18 +93,23 @@ func willBeAlive(isAlive, aliveNeighbours int) (nextGenGround string) {
 	return nextGenGround
 }
 
-func calculateTotalStats(ground string) (totalAlive, totalDead []string) {
-	if ground == "*" {
-		totalAlive = append(totalAlive, "*")
-	} else {
-		totalDead = append(totalDead, "-")
+func calculateTotalStats(ground [][]string, Height, Width int) (totalAlive, totalDead int) {
+	for i := 0; i < Height; i++ {
+		for j := 0; j < Width; j++ {
+			if ground[i][j] == "*" {
+				totalAlive++
+			} else {
+				totalDead++
+			}
+		}
 	}
 	return totalAlive, totalDead
 }
 
-func printStats(totalAlive, totalDead []string) {
-	fmt.Println("Total Alive Cells = ", len(totalAlive))
-	fmt.Println("Total Dead Cells = ", len(totalDead))
+func printStats(totalAlive, totalDead int) {
+	fmt.Printf("\n")
+	fmt.Println("Total Alive Cells = ", totalAlive)
+	fmt.Println("Total Dead Cells = ", totalDead)
 }
 
 func DelayBetweenGenerations(mytime int) {

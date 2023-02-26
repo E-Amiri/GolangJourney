@@ -1,3 +1,3 @@
-module main.go
+module GolangJourney
 
 go 1.20
